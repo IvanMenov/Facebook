@@ -1,0 +1,41 @@
+package model;
+
+public class Posting {
+
+	private static final int DEFAULT_POSTING_ID = -1;
+	private static final String EMPTY_STRING = "";
+	private String postingText;
+	private int postingId;
+	private String postingPubEmail;
+
+	public Posting(String postingText, int postingId, String postingPubEmail) {
+		this.postingText = postingText;
+		this.postingId = postingId;
+		this.postingPubEmail = postingPubEmail;
+	}
+
+	public String getPostingText() {
+		return postingText;
+	}
+
+	public void setPostingText(String postingText) {
+		this.postingText = (postingText != null ) ? postingText : EMPTY_STRING;
+	}
+
+	public int getPostingId() {
+		return postingId;
+	}
+
+	public void setPostingId(int postingId) {
+		this.postingId = (postingId > DEFAULT_POSTING_ID ) ? postingId : DEFAULT_POSTING_ID;
+	}
+
+	public String getPostingPubEmail() {
+		return postingPubEmail;
+	}
+
+	public void setPostingPubEmail(String postingPubEmail) {
+		this.postingPubEmail = (postingPubEmail != null ) ? postingPubEmail : EMPTY_STRING;
+	}
+
+}
