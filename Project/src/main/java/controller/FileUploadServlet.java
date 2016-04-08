@@ -32,7 +32,8 @@ import model.PersonDAO;
 @WebServlet("/upload")
 @MultipartConfig
 public class FileUploadServlet extends HttpServlet {
-	private static final String IMG_FOLDER_PATH = "D:\\WebProjects\\Facebook\\WebContent\\view\\img\\";
+	private static final String IMG_FOLDER_PATH = "C:\\Users\\Ivan\\Desktop\\Project\\WebContent\\view\\img\\";
+	
 	
 	private static final long serialVersionUID = 1L;
 

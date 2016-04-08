@@ -106,7 +106,7 @@ body{
 .cover-img {
     display: block;
     min-height: 100%;
-    margin: 0 auto;
+    margin:  0 auto;
 }
 .cover-blackout {
     position: absolute;

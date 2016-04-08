@@ -45,7 +45,7 @@
 
 					<!--  ./register = view/register -->
 					<form role="form" class="frm  animated flipInX" method="post"
-						action="././register">
+						action="./register">
 						<div class="form-content">
 
 							
@@ -76,8 +76,8 @@
 								<input type="radio" name="gender" value="female">Female</input>
 							</div>
 						</div>
-						<a href="./login.jsp" class="btn btn-info btn-lg btn-frm">Log
-							in</a> <input type="submit"
+						<a href="./login.jsp" class="btn btn-info btn-lg btn-frm">Login</a>
+						 <input type="submit"
 							class="btn btn-info btn-lg" value="Register" />
 						</a>
 					</form>

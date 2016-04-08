@@ -26,7 +26,6 @@ public class RegisterUserServlet extends HttpServlet {
 			throws ServletException, IOException {
 
 		String firstName = request.getParameter("first_name");
-		System.out.println(firstName);
 		String lastName = request.getParameter("last_name");
 		String email = request.getParameter("email");
 		String gender = request.getParameter("gender");
@@ -43,7 +42,7 @@ public class RegisterUserServlet extends HttpServlet {
 
 			String isMale = genderValidate(gender);
 
-			IPersonDAO dao = new PersonDAO();
+			PersonDAO dao = new PersonDAO();
 
 			Person person = new Person(firstName, lastName, email, isMale, password);
 

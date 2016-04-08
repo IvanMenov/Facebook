@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import model.PostingDAO;
+
 /**
  * Servlet implementation class LikesServlet
  */
@@ -17,7 +19,11 @@ public class LikesServlet extends HttpServlet {
        
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session= request.getSession();
-		
+		String postIdFromForm= request.getParameter("likesPostid");
+		int postId= Integer.parseInt(postIdFromForm);
+		PostingDAO dao= new PostingDAO();
+		dao.incrementPostLikes(postId);
+		response.sendRedirect("./getAllPosts");
 	}
 
 }

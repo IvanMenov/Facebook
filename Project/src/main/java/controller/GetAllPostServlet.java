@@ -11,8 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.Posting;
-import model.Posting;
+import model.Post;
+import model.Post;
 import model.PostingDAO;
 
 /**
@@ -31,9 +31,9 @@ public class GetAllPostServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		String email = (String) session.getAttribute("email");
 		
-		List<Posting> allPosts = dao.getAllPosts(email);
+		List<Post> allPosts = dao.getAllPosts(email);
 				
-		for (Posting post : allPosts) {
+		for (Post post : allPosts) {
 			
 			System.out.println(post);
 		}

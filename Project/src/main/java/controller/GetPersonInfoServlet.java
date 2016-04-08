@@ -64,7 +64,7 @@ public class GetPersonInfoServlet extends HttpServlet {
 				map.put("phone", rs.getString("phone"));
 				map.put("location", rs.getString("location"));
 				map.put("profilePic", rs.getString("profile_picture"));
-
+				map.put("coverPic", rs.getString("cover_photo"));
 				String isMale = rs.getString("isMale");
 
 				if (isMale != null) {
@@ -88,7 +88,7 @@ public class GetPersonInfoServlet extends HttpServlet {
 				}
 			}
 
-			response.sendRedirect("./view/profile.jsp");
+			response.sendRedirect("./getAllPosts");
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

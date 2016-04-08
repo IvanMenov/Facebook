@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -24,8 +25,12 @@ import model.PersonDAO;
 @MultipartConfig
 public class PictureUploadServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private static final String IMG_FOLDER_PATH = "D:\\WebProjects\\Facebook\\WebContent\\view\\pictures\\";
+	private static final String IMG_FOLDER_PATH = "C:\\Users\\Ivan\\Desktop\\Project\\WebContent\\view\\pictures\\";
     
+	@Override
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+		doPost(req, resp);
+	}
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String filePath = fileUpload(request, response);
 		
@@ -37,11 +42,8 @@ public class PictureUploadServlet extends HttpServlet {
 		System.out.println(filePath);
 		dao.uploadPicture(filePath, email);
 		
-		List<String> list= dao.getAllPictures(email); 
-		
-		session.setAttribute("pictures", list);
-		
-		response.sendRedirect("./view/photos.jsp");
+		RequestDispatcher rd = request.getRequestDispatcher("./pictureDisplay");
+		rd.forward(request, response);
 		return;
 	}
 

@@ -1,6 +1,9 @@
 package model;
 
 import java.io.File;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -20,7 +23,7 @@ public class PersonDAO implements IPersonDAO {
 	private static final int MIN_LOWERCASE_LETTERS = 2;
 	private static final int MIN_DIGIT_NUMBER = 1;
 	private static final int MIN_PASS_LENGTH = 8;
-	private static final String IMG_FOLDER_PATH = "D:\\WebProjects\\Facebook\\FacebookTMP\\WebContent";
+
 
 	// Add person to DB
 	public void addPerson(Person person) throws InvalidParameterException {
@@ -28,43 +31,70 @@ public class PersonDAO implements IPersonDAO {
 			try {
 				Connection con = DatabaseConnection.getInstance().getConnection();
 				String query = "INSERT INTO facebook.persons(first_name,last_name,email,isMale,password)"
-						+ " values(?,?,?,?,?)";
+						+ " values(?,?,?,?,MD5(?))";
 
 				PreparedStatement statement = con.prepareStatement(query);
 				statement.setString(1, person.getFirstName());
+
 				statement.setString(2, person.getLastName());
+
 				statement.setString(3, person.getEmail());
+
 				statement.setString(4, person.getGender());
+
 				statement.setString(5, person.getPassword());
 
 				statement.executeUpdate();
+
 			} catch (ClassNotFoundException e) {
 				e.printStackTrace();
 			} catch (SQLException e) {
 				e.printStackTrace();
 			}
-		} else
+		} else {
 			System.out.println("[PersonDAO] --- Object given to the method is null.");
 			throw new InvalidParameterException("Invalid input.");
+		}
+
+	}
+
+	public void updateCoverPhoto(String fileName, String email) throws InvalidParameterException {
+		if (fileName == null || email == null) {
+			System.out.println("invalid filename or email");
+			throw new InvalidParameterException("Invalid parameters.");
+
+		} else {
+			try {
+				Connection con = DatabaseConnection.getInstance().getConnection();
+				String query = "UPDATE persons SET cover_photo=? WHERE email=?";
+				PreparedStatement ps = con.prepareStatement(query);
+				ps.setString(1, fileName);
+				ps.setString(2, email);
+				ps.executeUpdate();
+
+			} catch (ClassNotFoundException | SQLException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 	// Save photo uri to db
 	public void updateProfilePhotoPath(String fileName, String email) {
-		if(fileName == null | email == null) {
+		if (fileName == null | email == null) {
 			System.out.println("[PersonDAO] --- updateProfilePhotoPath() --- invalid input");
 		}
-		
+
 		try {
 			Connection con = DatabaseConnection.getInstance().getConnection();
 
 			String query = "UPDATE persons SET profile_picture=? WHERE email=?";
 			PreparedStatement ps = con.prepareStatement(query);
-			
+
 			ps.setString(1, fileName);
 			ps.setString(2, email);
 			ps.executeUpdate();
-			
-			//----------------------------------------------------------------------
+
+			// ----------------------------------------------------------------------
 			System.out.println("[PersonDAO] --- updateProfilePhotoPath --- successfully ");
 
 		} catch (ClassNotFoundException e) {
@@ -75,8 +105,8 @@ public class PersonDAO implements IPersonDAO {
 
 	}
 
-	//---------------------------------------------------------------------------------
-	
+	// ---------------------------------------------------------------------------------
+
 	// Get existing person from DB
 	public ResultSet createPersonFromDB(String email) {
 		Person person = null;
@@ -97,16 +127,23 @@ public class PersonDAO implements IPersonDAO {
 		return result;
 	}
 
-	//---------------------------------------------------------------------------------
+	// ---------------------------------------------------------------------------------
+	
+	//Check for existing person in the database when trying to login
 	
 	public Person personLoginCheck(String email, String password) throws InvalidParameterException {
 		Person person = null;
 		try {
+			
+			MessageDigest digest= MessageDigest.getInstance("MD5");
+			digest.update(password.getBytes(), 0, password.length());
+			String encryptedText=new BigInteger(1, digest.digest()).toString(16);
+			
 			Connection con = DatabaseConnection.getInstance().getConnection();
 			String query = "SELECT * FROM persons WHERE email =?  AND password=?";
 			PreparedStatement statement = con.prepareStatement(query);
 			statement.setString(1, email);
-			statement.setString(2, password);
+			statement.setString(2, encryptedText);
 			ResultSet result = statement.executeQuery();
 			while (result.next()) {
 				String firstName = result.getString(1);
@@ -118,16 +155,18 @@ public class PersonDAO implements IPersonDAO {
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
 		}
 		return person;
 	}
 
-	//---------------------------------------------------------------------------------
-	
+	// ---------------------------------------------------------------------------------
+
 	public void updatePassword(String password, String email) {
 		try {
 			Connection con = DatabaseConnection.getInstance().getConnection();
-			String query = "UPDATE persons SET password=? WHERE email=?";
+			String query = "UPDATE persons SET password=MD5(?) WHERE email=?";
 			PreparedStatement stm = con.prepareStatement(query);
 			stm.setString(1, password);
 			stm.setString(2, email);
@@ -142,8 +181,10 @@ public class PersonDAO implements IPersonDAO {
 	}
 
 	// retrive current Password from db and compares it to the request parameter
+	
 	public boolean retrieveCurrentPassword(String email, String currentPassword) {
-		try {
+		try {		
+			String encryptPass="";
 			String pass = null;
 			Connection con = DatabaseConnection.getInstance().getConnection();
 			String query = "SELECT password FROM persons WHERE email= ?";
@@ -153,7 +194,11 @@ public class PersonDAO implements IPersonDAO {
 			while (rs.next()) {
 				pass = rs.getString("password");
 			}
-			if (currentPassword == null || !currentPassword.equals(pass)) {
+			MessageDigest digest= MessageDigest.getInstance("MD5");
+			digest.update(currentPassword.getBytes(), 0, currentPassword.length());
+			encryptPass = new BigInteger(1, digest.digest()).toString(16);
+			
+			if (currentPassword == null || !encryptPass.equals(pass)) {
 				return false;
 			}
 		} catch (ClassNotFoundException e) {
@@ -162,12 +207,15 @@ public class PersonDAO implements IPersonDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 			return false;
+		} catch (NoSuchAlgorithmException e) {
+			e.printStackTrace();
+			return false;
 		}
 		return true;
 	}
 
-	//---------------------------------------------------------------------------------
-	
+	// ---------------------------------------------------------------------------------
+
 	public void updatePersonInfo(String email, String firstName, String lastName, String location, String phone,
 			String about) {
 
@@ -185,16 +233,17 @@ public class PersonDAO implements IPersonDAO {
 
 				if (parameter != null) {
 					if (parameter.length() > 0) {
-//						String query = "UPDATE persons SET " + columnName + "='" + parameter + "' WHERE email='" + email
-//								+ "'";
-//						Statement stmt = con.createStatement();						
-//						stmt.executeUpdate(query);
-						
+						// String query = "UPDATE persons SET " + columnName +
+						// "='" + parameter + "' WHERE email='" + email
+						// + "'";
+						// Statement stmt = con.createStatement();
+						// stmt.executeUpdate(query);
+
 						String sql = "UPDATE persons SET " + columnName + "=? WHERE email=?";
 						PreparedStatement ps = con.prepareStatement(sql);
 						ps.setString(1, parameter);
 						ps.setString(2, email);
-						
+
 						ps.executeUpdate();
 
 						System.out.println("[PersonDAO] updatePersonInfo() --- updated");

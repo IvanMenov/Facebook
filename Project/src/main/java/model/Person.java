@@ -1,5 +1,8 @@
 package model;
 
+import java.util.Collections;
+import java.util.List;
+
 import exceptions.InvalidParameterException;
 
 public class Person {
@@ -24,7 +27,8 @@ public class Person {
 	private String password;
 	private String phone;
 	private String location;
-
+	private List<Post>posts;
+	
 	public Person() {
 	}
 
@@ -73,6 +77,7 @@ public class Person {
 
 			if (localPart.length() > 0 && domainPart.length() > 0 && validDomainName) {
 				this.email = email;
+				System.out.println("meila e gotov");
 
 			} else {
 				System.out.println("[Person] Invalid email address.");
@@ -243,4 +248,15 @@ public class Person {
 
 		return containsValidChars;
 	}
+
+	public List<Post> getPosts() {
+		return this.posts;
+	}
+
+	public void setPosts(List<Post> posts) {
+		if(posts!=null)
+		this.posts = posts;
+	}
+
+	
 }
