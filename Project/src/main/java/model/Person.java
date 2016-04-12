@@ -13,6 +13,7 @@ public class Person implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = -4546391323648164383L;
+
 	private static final String ALPHANUMERICAL_CHARS_REGEX = "[a-zA-Z0-9]*";
 	private static final String ONLY_DIGITS_REGEX = "[0-9]*";
 	private static final int MIN_UPPERCASE_LETTERS = 1;
@@ -33,8 +34,8 @@ public class Person implements Serializable {
 	private String password;
 	private String phone;
 	private String location;
-	private List<Post>posts;
-	
+	private List<Post> posts;
+
 	public Person() {
 	}
 
@@ -42,10 +43,12 @@ public class Person implements Serializable {
 		setFirstName(firstName);
 		setLastName(lastName);
 	}
-	public Person(String firstName, String lastName, String profilePic) throws InvalidParameterException{
-		this(firstName,lastName);
+
+	public Person(String firstName, String lastName, String profilePic) throws InvalidParameterException {
+		this(firstName, lastName);
 		this.setProfilePicPath(profilePic);
 	}
+
 	public Person(String firstName, String lastName, String email, String gender) throws InvalidParameterException {
 
 		this(firstName, lastName);
@@ -66,15 +69,15 @@ public class Person implements Serializable {
 		setLocation(location);
 	}
 
-	//---------------------------------------------------------------------------------
-	
+	// ---------------------------------------------------------------------------------
+
 	public void setEmail(String email) throws InvalidParameterException {
 
 		if (email == null) {
 			System.out.println("[Person] Invalid email address.");
 			throw new InvalidParameterException("Invalid email address.");
 		} else {
-			
+
 			if (!email.contains(MAIL_AT_SIGN)) {
 				System.out.println("[Person] Invalid email address.");
 				throw new InvalidParameterException("Invalid email address.");
@@ -98,11 +101,11 @@ public class Person implements Serializable {
 	// -----------------------------------------------------------------------
 
 	public void setFirstName(String firstName) throws InvalidParameterException {
-		if(firstName == null) {
+		if (firstName == null) {
 			System.out.println("[Person] Invalid first name.");
 			throw new InvalidParameterException("Invalid first name.");
 		}
-		
+
 		boolean validFirstName = !firstName.equals(EMPTY_STRING) && validChars(firstName);
 
 		if (validFirstName) {
@@ -114,11 +117,11 @@ public class Person implements Serializable {
 	}
 
 	public void setLastName(String lastName) throws InvalidParameterException {
-		if(lastName == null) {
+		if (lastName == null) {
 			System.out.println("[Person] Invalid last name.");
 			throw new InvalidParameterException("Invalid last name.");
 		}
-		
+
 		boolean validLastName = !lastName.equals(EMPTY_STRING);
 		// && validChars(lastName);
 
@@ -131,7 +134,7 @@ public class Person implements Serializable {
 	}
 
 	public void setAbout(String about) throws InvalidParameterException {
-		if(about == null) {
+		if (about == null) {
 			return;
 		}
 		boolean validAboutText = about != null && !about.equals(EMPTY_STRING);
@@ -144,11 +147,12 @@ public class Person implements Serializable {
 	}
 
 	/**
-	 *  -----------------------------------------------------------------------
+	 * -----------------------------------------------------------------------
+	 * 
 	 * @param password
 	 * @throws InvalidParameterException
-	 * Password should have a min. of 8 chars, min 1 uppercase
-	 * Letter, min. 2 lowercase ones, min 1 digit
+	 *             Password should have a min. of 8 chars, min 1 uppercase
+	 *             Letter, min. 2 lowercase ones, min 1 digit
 	 */
 
 	public void setPassword(String password) throws InvalidParameterException {
@@ -188,12 +192,12 @@ public class Person implements Serializable {
 			}
 		}
 	}
-	
+
 	public void setPhone(String phone) {
-		if(phone == null) {
+		if (phone == null) {
 			return;
 		}
-		
+
 		if (phone != null && phone.length() == 10) {
 			boolean containsOnlyDigits = phone.matches(ONLY_DIGITS_REGEX);
 
@@ -248,20 +252,21 @@ public class Person implements Serializable {
 		return profilePicPath;
 	}
 
-	public void setProfilePicPath(String picName){
-		if(picName!=null){
-			this.profilePicPath=picName;
+	public void setProfilePicPath(String picName) {
+		if (picName != null) {
+			this.profilePicPath = picName;
 		}
 	}
+
 	public String getAbout() {
 		return about;
 	}
 
 	private boolean validChars(String input) {
-		if(input == null) {
+		if (input == null) {
 			return false;
 		}
-		
+
 		boolean containsValidChars = input.matches(ALPHANUMERICAL_CHARS_REGEX);
 
 		return containsValidChars;
@@ -272,8 +277,8 @@ public class Person implements Serializable {
 	}
 
 	public void setPosts(List<Post> posts) {
-		if(posts!=null)
-		this.posts = posts;
+		if (posts != null)
+			this.posts = posts;
 	}
 
 	@Override
@@ -283,5 +288,4 @@ public class Person implements Serializable {
 				+ phone + ", location=" + location + "]";
 	}
 
-	
 }

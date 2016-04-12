@@ -213,12 +213,10 @@
 						var footer_element = $("div.after-last-comment[post-id='" + post_id + "']");
 
 						$(html).insertBefore(footer_element);
-
 					} 
 				}
             };
 
-            
             
     		function invokeAjax() {
 				$.ajax({
@@ -235,7 +233,6 @@
         }	
     );
     </script>
-
 <% } else { response.sendRedirect("../login.jsp"); } %>
 </body>
 </html>

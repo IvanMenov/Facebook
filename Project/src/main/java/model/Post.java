@@ -6,9 +6,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class Post implements Serializable {
-		
-	private static final long serialVersionUID = -4746346808422319712L;
 
+	private static final long serialVersionUID = -4746346808422319712L;
 	private BlockingQueue<Comment> allComments = new LinkedBlockingQueue<>();
 
 	private String firstName;
@@ -20,8 +19,8 @@ public class Post implements Serializable {
 	private String publisherEmail;
 	private String recepientEmail;
 
-	public Post(String firstName, String LastName, String post, String date,
-			int id, int countLikes, String publisherEmail, String recepientEmail) {
+	public Post(String firstName, String LastName, String post, String date, int id, int countLikes,
+			String publisherEmail, String recepientEmail) {
 		setFirstName(firstName);
 		setLastName(LastName);
 		setText(post);
@@ -31,20 +30,20 @@ public class Post implements Serializable {
 		this.publisherEmail = publisherEmail;
 		this.recepientEmail = recepientEmail;
 	}
-	
+
 	public BlockingQueue<Comment> getAllComments() {
 		return allComments;
 	}
 
 	public boolean addAllComment(List<Comment> comments) {
-		if(comments != null) {
+		if (comments != null) {
 			try {
-				for(Comment c : comments) {
-					allComments.put(c);					
+				for (Comment c : comments) {
+					allComments.put(c);
 				}
-				
+
 				return true;
-				
+
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return false;
@@ -52,7 +51,7 @@ public class Post implements Serializable {
 		}
 		return false;
 	}
-	
+
 	// Getters and setters
 	public String getFirstName() {
 		return firstName;
@@ -116,6 +115,7 @@ public class Post implements Serializable {
 	public String getRecepientEmail() {
 		return recepientEmail;
 	}
+
 	@Override
 	public String toString() {
 		return "Post [firstName=" + firstName + ", lastName=" + lastName + ", text=" + text + ", date=" + date

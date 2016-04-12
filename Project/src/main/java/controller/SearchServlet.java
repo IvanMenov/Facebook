@@ -15,7 +15,8 @@ import javax.servlet.http.HttpSession;
 import model.SearchDAO;
 
 /**
- * Servlet implementation class SearchServlet
+ * Implements search engine
+ * 
  */
 @WebServlet("/search")
 public class SearchServlet extends HttpServlet {
@@ -28,7 +29,7 @@ public class SearchServlet extends HttpServlet {
 		if (request.getSession(false) == null) {
 			response.sendRedirect("./login.jsp");
 			return;
-			
+
 		} else {
 			// Get user's input
 			String input = request.getParameter("search");

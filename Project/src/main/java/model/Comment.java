@@ -13,23 +13,22 @@ public class Comment implements Serializable {
 	private String email;
 	private int commentId;
 	private String firstName;
-	
+
 	public Comment(int postId, String text, String email, int commentId, String firstName) {
-		
+
 		this.matchingPostId = postId;
 		this.text = text;
 		this.email = email;
 		this.commentId = commentId;
 		this.firstName = firstName;
 	}
-	
 
 	public int getMatchingPostId() {
 		return matchingPostId;
 	}
 
 	public void setMatchingPostId(int postId) {
-		if(postId > 0) {
+		if (postId > 0) {
 			this.matchingPostId = postId;
 		}
 	}
@@ -39,7 +38,7 @@ public class Comment implements Serializable {
 	}
 
 	public void setText(String text) {
-		if(text != null) {
+		if (text != null) {
 			this.text = text;
 		}
 	}
@@ -49,13 +48,15 @@ public class Comment implements Serializable {
 	}
 
 	public void setEmail(String email) {
-		if(email != null) {
+		if (email != null) {
 			this.email = email;
 		}
 	}
+
 	public int getCommentId() {
 		return commentId;
 	}
+
 	public String getFirstName() {
 		return firstName;
 	}
@@ -64,7 +65,5 @@ public class Comment implements Serializable {
 	public String toString() {
 		return "Comment [matchingPostId=" + matchingPostId + ", text=" + text + ", email=" + email + "]";
 	}
-	
-	
 
 }

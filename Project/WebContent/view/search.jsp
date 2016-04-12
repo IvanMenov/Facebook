@@ -14,6 +14,7 @@
 %>
 
 <% if (session.getAttribute("email") != null) {  %>
+
 	<c:import url="./nav_bar.jsp"></c:import>
 	<div class="row text-center color-container">
 		<h1 class="profile-name"><c:out value="${sessionScope.first_name}${' '}${sessionScope.last_name}"></c:out></h1>

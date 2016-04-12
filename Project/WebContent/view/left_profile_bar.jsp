@@ -35,6 +35,7 @@
 %>
 
 <% if (session.getAttribute("email") != null) {  %>
+
  <!-- Timeline content -->
     <div class="row">
       <div class="container" style="margin-top:50px;">

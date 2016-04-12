@@ -36,6 +36,7 @@
 %>
 
 <% if (session.getAttribute("email") != null) {  %>
+
 	<!-- Fixed navbar -->
 	<nav class="navbar navbar-default navbar-fixed-top navbar-principal">
 	<div class="container">

@@ -30,17 +30,15 @@ public class CommentServlet extends HttpServlet {
 		String email = (String) session.getAttribute("email");
 		String friendEmail = (String) session.getAttribute("friend_email");
 		Integer postId = Integer.parseInt(postIdString);
-		
-		
-		
+
 		/*
-		 *  Update db with new comment
+		 * Update db with new comment
 		 */
 		if (commentText != null && postId != null && email != null) {
 			dao.putCommentOnPost(postId, email, commentText);
 		}
 
-		if(friendEmail == null) {
+		if (friendEmail == null) {
 			response.sendRedirect("./getAllPosts");
 		} else {
 			response.sendRedirect("./getAllPosts?friend_email=" + friendEmail);

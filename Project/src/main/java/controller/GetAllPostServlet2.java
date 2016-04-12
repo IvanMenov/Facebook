@@ -19,14 +19,18 @@ import model.Post;
 import model.PostingDAO;
 
 /**
- * Servlet implementation class GetAllPostServlet
+ * Rest Service passed as json Used for real-time comments sharing system
+ * GetAllPostServlet servlet
+ * 
+ * 
  */
 @WebServlet("/getAllPosts2")
 public class GetAllPostServlet2 extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	@Override
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
 		doPost(request, response);
 	}
 
@@ -37,11 +41,11 @@ public class GetAllPostServlet2 extends HttpServlet {
 		HttpSession session = request.getSession();
 		String email = (String) session.getAttribute("email");
 		String friendEmail = (String) session.getAttribute("friend_email");
-		
+
 		if (friendEmail != null) {
 			email = friendEmail;
 		}
-		
+
 		List<Post> allPosts = dao.getAllPosts(email, true);
 
 		Gson gsonObj = new Gson();

@@ -21,7 +21,7 @@ import model.Post;
 import model.PostingDAO;
 
 /**
- * Servlet implementation class GetAllPostServlet
+ * GetAllPost controller Used for communication between db and the view
  */
 @WebServlet("/getAllPosts")
 public class GetAllPostServlet extends HttpServlet {
@@ -33,29 +33,26 @@ public class GetAllPostServlet extends HttpServlet {
 
 		String friendEmail = request.getParameter("friend_email");
 
+		// If there is a friendEmail in the session you're on a friend's wall
 		if (friendEmail == null) {
 			doPost(request, response);
 			return;
 		}
+
 		HttpSession session = request.getSession();
 		IPostingDAO dao = new PostingDAO();
 		List<Post> allPosts = dao.getAllPosts(friendEmail, false);
-		
-		System.out.println("Those are the posts:");
-		for (Post post : allPosts) {
-			System.out.println(post.toString());
-		}
-		session.setAttribute("posts", allPosts);
+
 		PersonDAO personDao = new PersonDAO();
 		Person person = personDao.getPerson(friendEmail);
+
+		session.setAttribute("posts", allPosts);
 		session.setAttribute("home_first_name", person.getFirstName());
 		session.setAttribute("home_last_name", person.getLastName());
 		session.setAttribute("home_profile_pic", person.getProfilePicPath());
-		System.out.println("getAllPost profile pic name na frienda:"+session.getAttribute("home_profile_pic"));
 		session.setAttribute("home_email", friendEmail);
-		
+
 		session.setAttribute("friend_email", friendEmail);
-		System.out.println("friend meila: "+session.getAttribute("friend_email"));
 		response.sendRedirect("./view/home.jsp");
 	}
 
@@ -76,11 +73,10 @@ public class GetAllPostServlet extends HttpServlet {
 		session.setAttribute("home_first_name", session.getAttribute("first_name"));
 		session.setAttribute("home_last_name", session.getAttribute("last_name"));
 		session.setAttribute("home_profile_pic", session.getAttribute("profilePic"));
-		System.out.println("getAllPost profile pic name:"+session.getAttribute("home_profile_pic"));
-		
+
 		session.setAttribute("home_email", email);
 		session.setAttribute("friend_email", null);
-			
+
 		response.sendRedirect("./view/home.jsp");
 
 	}
